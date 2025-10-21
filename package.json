@@ -1,5 +1,5 @@
 {
-  "name": "goit-node-js",
+  "name": "goit-node",
   "version": "1.0.0",
   "description": "goit-node-js",
   "type": "module",
@@ -10,15 +10,33 @@
     "add-one": "node src/scripts/addOneContact.js",
     "count": "node src/scripts/countContacts.js",
     "remove-last": "node src/scripts/removeLastContact.js",
-    "remove-all": "node src/scripts/removeAllContacts.js"
+    "remove-all": "node src/scripts/removeAllContacts.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.2.0",
+    "@eslint/js": "^9.38.0",
+    "@eslint/json": "^0.13.2",
     "@faker-js/faker": "^10.1.0",
-    "eslint": "^9.2.0",
-    "globals": "^15.1.0"
-  }
+    "eslint": "^9.38.0",
+    "globals": "^15.15.0",
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.2",
+    "pino-http": "^11.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anastasiia-Lahotska/nodejs-hw-mongodb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Anastasiia-Lahotska/nodejs-hw-mongodb/issues"
+  },
+  "homepage": "https://github.com/Anastasiia-Lahotska/nodejs-hw-mongodb#readme"
 }
