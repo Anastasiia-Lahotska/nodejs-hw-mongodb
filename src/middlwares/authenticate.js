@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import createHttpError from 'http-errors';
 import { User } from '../db/models/User.js';
 
-export const authenticate = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -33,3 +33,5 @@ export const authenticate = async (req, res, next) => {
     next(err);
   }
 };
+
+export default authenticate;
