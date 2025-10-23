@@ -5,7 +5,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlwares/validateBody.js';
 import { isValidId } from '../middlwares/isValidId.js';
 import { createContactSchema, updateContactSchema } from '../validation/contacts.js';
-import { authenticate } from '../middlwares/authenticate.js';
+import authenticate from '../middlwares/authenticate.js';
 
 const router = Router();
 
