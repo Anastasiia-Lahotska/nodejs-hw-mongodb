@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User } from '../db/models/User.js';
-import { Session } from '../db/models/Session.js';
+import Session from '../db/models/Session.js';
 
 export const registerUser = async ({ name, email, password }) => {
   const existingUser = await User.findOne({ email });
