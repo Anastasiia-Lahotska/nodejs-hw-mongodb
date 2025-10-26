@@ -21,6 +21,7 @@ router.post('/logout', ctrlWrapper(logoutController));
 
 router.post('/send-reset-email', validateBody(emailSchema), ctrlWrapper(sendResetEmailController));
 
+// eslint-disable-next-line no-undef
 router.post('/reset-pwd', validateBody(resetPasswordSchema), ctrlWrapper(resetPasswordController));
 
 export default router;

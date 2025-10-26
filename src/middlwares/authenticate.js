@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
 import createHttpError from 'http-errors';
 import { User } from '../db/models/User.js';
+import { Session } from '../db/models/Session.js';
 
 const authenticate = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization || '';
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw createHttpError(401, 'Authorization header missing or invalid');
@@ -20,6 +21,11 @@ const authenticate = async (req, res, next) => {
         throw createHttpError(401, 'Access token expired');
       }
       throw createHttpError(401, 'Invalid access token');
+    }
+
+    const session = await Session.findOne({ userId: payload.userId, accessToken: token });
+    if (!session) {
+      throw createHttpError(401, 'Session expired or invalid');
     }
 
     const user = await User.findById(payload.userId);
