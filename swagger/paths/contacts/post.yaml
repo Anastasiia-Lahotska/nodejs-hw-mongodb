@@ -1,0 +1,31 @@
+tags:
+  - Contacts
+summary: Створити новий контакт
+operationId: createContact
+description: Додає новий контакт для поточного користувача.
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: "John Doe"
+          email:
+            type: string
+            example: "john@example.com"
+          phone:
+            type: string
+            example: "+380501234567"
+          favorite:
+            type: boolean
+            example: false
+responses:
+  "201":
+    description: Контакт успішно створено
+  "400":
+    description: Помилка валідації даних

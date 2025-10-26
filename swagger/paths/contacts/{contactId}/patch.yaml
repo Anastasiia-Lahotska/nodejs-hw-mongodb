@@ -1,0 +1,38 @@
+tags:
+  - Contacts
+summary: Оновити дані контакта
+operationId: updateContact
+description: Оновлює інформацію про контакт користувача за ID.
+security:
+  - bearerAuth: []
+parameters:
+  - name: contactId
+    in: path
+    required: true
+    description: Унікальний ID контакта
+    schema:
+      type: string
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: "Jane Doe"
+          email:
+            type: string
+            example: "jane@example.com"
+          phone:
+            type: string
+            example: "+380931112233"
+          favorite:
+            type: boolean
+            example: true
+responses:
+  "200":
+    description: Контакт успішно оновлено
+  "404":
+    description: Контакт не знайдено
