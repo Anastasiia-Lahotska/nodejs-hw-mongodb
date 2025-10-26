@@ -1,7 +1,10 @@
+import bcrypt from 'bcrypt';
 import { registerUser, loginService, refreshService, logoutService } from '../services/auth.js';
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
+import { User } from '../db/models/User.js';
+import { Session } from '../db/models/Session.js';
 
 export const registerController = async (req, res) => {
   const { name, email, password } = req.body;
@@ -81,20 +84,21 @@ export const logoutController = async (req, res) => {
   res.status(204).send();
 };
 
-export const sendResetEmailController = async (req, res) => {
+// eslint-disable-next-line no-unused-vars
+export const sendResetEmailController = async (req, res, next) => {
   try {
     const { email } = req.body;
 
-    const user = await import('../db/models/User.js').then(m => m.User.findOne({ email }));
+    const user = await User.findOne({ email });
     if (!user) throw createHttpError(404, 'User not found!');
 
-    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '5m' });
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '5m' });
 
     const resetLink = `${process.env.APP_DOMAIN}/reset-password?token=${token}`;
 
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
+      port: Number(process.env.SMTP_PORT),
       secure: false,
       auth: {
         user: process.env.SMTP_USER,
@@ -104,10 +108,11 @@ export const sendResetEmailController = async (req, res) => {
 
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
-      to: user.email,
+      to: email,
       subject: 'Reset Your Password',
-      html: `<p>Click the link below to reset your password (valid for 5 minutes):</p>
-             <a href="${resetLink}">${resetLink}</a>`
+      html: `<p>Hello, ${user.name || 'User'}!</p>
+        <p>Click the link below to reset your password (valid for 5 minutes):</p>
+        <a href="${resetLink}">${resetLink}</a>`,
     });
 
     res.status(200).json({
@@ -116,11 +121,42 @@ export const sendResetEmailController = async (req, res) => {
       data: {}
     });
   } catch (err) {
-    console.error(err);
-    if (err.response || err.status) {
-      throw err;
-    } else {
-      throw createHttpError(500, 'Failed to send the email, please try again later.');
+    console.error('Error while sending reset email:', err);
+
+    if (err.status) return next(err);
+    next(createHttpError(500, 'Failed to send the email, please try again later.'));
+  }
+};
+
+export const resetPasswordController = async (req, res, next) => {
+  try {
+    const { token, password } = req.body;
+
+    let payload;
+    try {
+      payload = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      throw createHttpError(401, 'Token is expired or invalid.');
     }
+
+    const user = await User.findOne({ email: payload.email });
+    if (!user) {
+      throw createHttpError(404, 'User not found!');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    await Session.deleteMany({ userId: user._id });
+
+    res.status(200).json({
+      status: 200,
+      message: 'Password has been successfully reset.',
+      data: {},
+    });
+  } catch (err) {
+    next(err);
   }
 };

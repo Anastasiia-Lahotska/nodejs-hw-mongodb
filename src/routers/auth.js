@@ -1,15 +1,10 @@
 import express from 'express';
-import { registerController, loginController, refreshController, logoutController, sendResetEmailController } from '../controllers/auth.js';
-import { resetPasswordSchema } from '../validation/auth.js';
+import { registerController, loginController, refreshController, logoutController, sendResetEmailController, resetPasswordController } from '../controllers/auth.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import validateBody from '../middlwares/validateBody.js';
-import Joi from 'joi';
+import { validateBody } from '../middlwares/validateBody.js';
+import { emailSchema, resetPasswordSchema } from '../validation/auth.js';
 
-const router = express.Router();
-
-const emailSchema = Joi.object({
-  email: Joi.string().email().required()
-});
+const router = express.Router();;
 
 router.post('/register', ctrlWrapper(registerController));
 

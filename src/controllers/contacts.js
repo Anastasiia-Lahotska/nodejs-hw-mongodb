@@ -1,3 +1,4 @@
+import cloudinary from '../utils/cloudinary.js';
 import createError from 'http-errors';
 import { getAllContacts, getContactById, createContact, updateContact, deleteContact } from '../services/contacts.js';
 
@@ -41,7 +42,23 @@ export const getContactByIdController = async (req, res) => {
 
 export const createContactController = async (req, res) => {
   const userId = req.user._id;
-  const newContact = await createContact({ ...req.body, userId });
+  let photoUrl = null;
+
+  if (req.file) {
+    const upload = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: 'contacts_photos' },
+        (error, result) => {
+          if (error) reject(createError(500, 'Photo upload failed'));
+          else resolve(result);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+    photoUrl = upload.secure_url;
+  }
+
+  const newContact = await createContact({ ...req.body, userId, photo: photoUrl });
 
   res.status(201).json({
     status: 201,
@@ -53,16 +70,29 @@ export const createContactController = async (req, res) => {
 export const updateContactController = async (req, res) => {
   const { contactId } = req.params;
   const userId = req.user._id;
+  let updateData = { ...req.body };
 
-  const updated = await updateContact(contactId, userId, req.body);
-
-  if (!updated) {
-    throw createError(404, 'Contact not found');
+  if (req.file) {
+    const upload = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: 'contacts_photos' },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      stream.end(req.file.buffer);
+    });
+    updateData.photo = upload.secure_url;
   }
+
+  const updated = await updateContact(contactId, userId, updateData);
+
+  if (!updated) throw createError(404, 'Contact not found');
 
   res.status(200).json({
     status: 200,
-    message: `Successfully patched a contact!`,
+    message: 'Successfully patched a contact!',
     data: updated,
   });
 };
