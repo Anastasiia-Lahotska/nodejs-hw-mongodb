@@ -1,0 +1,288 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Contacts API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "description": "Це API для керування контактами та користувачами.\n"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    },
+    {
+      "url": "https://nodejs-hw-mongodb-1-wppe.onrender.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Реєстрація, логін, оновлення токенів, скидання пароля"
+    },
+    {
+      "name": "Contacts",
+      "description": "CRUD операції для контактів"
+    }
+  ],
+  "paths": {
+    "/contacts": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Отримати список контактів",
+        "operationId": "getContacts",
+        "description": "Повертає список усіх контактів поточного користувача з підтримкою пагінації та сортування.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Номер сторінки",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "Кількість контактів на сторінці",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Поле, за яким виконувати сортування",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "name"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "Напрямок сортування (asc або desc)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "asc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успішно отримано список контактів"
+          },
+          "401": {
+            "description": "Неавторизований користувач"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Створити новий контакт",
+        "operationId": "createContact",
+        "description": "Додає новий контакт для поточного користувача.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+380501234567"
+                  },
+                  "favorite": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Контакт успішно створено"
+          },
+          "400": {
+            "description": "Помилка валідації даних"
+          }
+        }
+      }
+    },
+    "/contacts/{contactId}": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Отримати контакт за ID",
+        "operationId": "getContactById",
+        "description": "Повертає контакт користувача за унікальним ідентифікатором.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "required": true,
+            "description": "Унікальний ID контакта",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Контакт успішно знайдено"
+          },
+          "404": {
+            "description": "Контакт не знайдено"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Оновити дані контакта",
+        "operationId": "updateContact",
+        "description": "Оновлює інформацію про контакт користувача за ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "required": true,
+            "description": "Унікальний ID контакта",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Jane Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jane@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+380931112233"
+                  },
+                  "favorite": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Контакт успішно оновлено"
+          },
+          "404": {
+            "description": "Контакт не знайдено"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Видалити контакт",
+        "operationId": "deleteContact",
+        "description": "Видаляє контакт користувача за унікальним ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "required": true,
+            "description": "Унікальний ID контакта",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Контакт успішно видалено"
+          },
+          "404": {
+            "description": "Контакт не знайдено"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

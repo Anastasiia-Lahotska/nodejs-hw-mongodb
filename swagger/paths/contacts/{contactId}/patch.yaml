@@ -15,7 +15,7 @@ parameters:
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         properties:
@@ -31,6 +31,9 @@ requestBody:
           favorite:
             type: boolean
             example: true
+          photo:
+            type: string
+            format: binary
 responses:
   "200":
     description: Контакт успішно оновлено

@@ -8,7 +8,7 @@ security:
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         properties:
@@ -24,6 +24,9 @@ requestBody:
           favorite:
             type: boolean
             example: false
+          photo:
+            type: string
+            format: binary
 responses:
   "201":
     description: Контакт успішно створено
