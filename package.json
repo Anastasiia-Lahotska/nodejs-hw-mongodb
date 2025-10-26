@@ -12,7 +12,10 @@
     "remove-last": "node src/scripts/removeLastContact.js",
     "remove-all": "node src/scripts/removeAllContacts.js",
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview-docs"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "@eslint/js": "^9.38.0",
     "@eslint/json": "^0.13.2",
     "@faker-js/faker": "^10.1.0",
+    "@redocly/cli": "^2.8.0",
     "eslint": "^9.38.0",
     "globals": "^15.15.0",
     "nodemon": "^3.1.10"
