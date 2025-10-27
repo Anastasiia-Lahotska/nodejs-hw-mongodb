@@ -79,5 +79,5 @@ export const logoutService = async (refreshToken) => {
     throw createHttpError(401, 'Invalid refresh token');
   }
 
-  await Session.deleteOne({ _id: session._id });
+  await Session.deleteMany({ userId: session.userId });
 };
