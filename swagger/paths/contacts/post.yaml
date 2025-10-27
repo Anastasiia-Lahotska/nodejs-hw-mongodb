@@ -30,5 +30,18 @@ requestBody:
 responses:
   "201":
     description: Контакт успішно створено
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Contact created successfully!
+            data:
+              $ref: ../../components/schemas/contact.yaml
   "400":
     description: Помилка валідації даних

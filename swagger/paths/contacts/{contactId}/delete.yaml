@@ -14,6 +14,8 @@ parameters:
       type: string
 responses:
   "204":
-    description: Контакт успішно видалено
+    description: Контакт успішно видалено (без контенту)
   "404":
-    description: Контакт не знайдено
+    description: Контакт не знайдено або вже був видалений
+  "401":
+    description: Неавторизований запит

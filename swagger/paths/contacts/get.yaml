@@ -37,5 +37,32 @@ parameters:
 responses:
   "200":
     description: Успішно отримано список контактів
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found contacts!
+            data:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: ../../components/schemas/contact.yaml
+                page:
+                  type: integer
+                  example: 1
+                perPage:
+                  type: integer
+                  example: 10
+                totalItems:
+                  type: integer
+                  example: 25
   "401":
     description: Неавторизований користувач
