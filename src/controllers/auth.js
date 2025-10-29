@@ -67,7 +67,8 @@ export const refreshController = async (req, res) => {
   });
 };
 
-export const logoutController = async (req, res) => {
+export const logoutController = async (req, res, next) => {
+  try {
   const { refreshToken } = req.cookies;
 
   if (!refreshToken) {
@@ -81,7 +82,10 @@ export const logoutController = async (req, res) => {
     secure: process.env.NODE_ENV === 'production',
   });
 
-  res.status(204).send();
+  return res.status(204).send();
+} catch (error) {
+  next(error)
+}
 };
 
 // eslint-disable-next-line no-unused-vars
