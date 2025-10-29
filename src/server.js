@@ -1,8 +1,10 @@
 import 'dotenv/config';
+console.log('JWT_ACCESS_SECRET:', process.env.JWT_ACCESS_SECRET);
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import pino from 'pino-http';
+import { ensureEnv } from './utils/ensureEnv.js';
 /*import { getContactsController, getContactByIdController } from './controllers/contacts.js';*/
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
@@ -10,6 +12,7 @@ import { errorHandler } from './middlwares/errorHandler.js';
 import { notFoundHandler } from './middlwares/notFoundHandler.js';
 
 export const setupServer = () => {
+  ensureEnv();
   const app = express();
 
   app.use(cors());
