@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import pino from 'pino-http';
 /*import { getContactsController, getContactByIdController } from './controllers/contacts.js';*/
@@ -13,6 +14,7 @@ export const setupServer = () => {
 
   app.use(cors());
   app.use(express.json());
+  app.use(cookieParser());
   app.use(pino());
 
   /*app.get('/contacts', getContactsController);
