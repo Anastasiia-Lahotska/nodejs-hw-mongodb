@@ -49,6 +49,6 @@ responses:
               type: string
               example: Successfully updated contact!
             data:
-              $ref: ../../components/schemas/contact.yaml
+              $ref: ../../../components/schemas/contact.yaml
   "404":
     description: Контакт не знайдено

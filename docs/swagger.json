@@ -85,7 +85,47 @@
         ],
         "responses": {
           "200": {
-            "description": "Успішно отримано список контактів"
+            "description": "Успішно отримано список контактів",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found contacts!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/contact"
+                          }
+                        },
+                        "page": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "perPage": {
+                          "type": "integer",
+                          "example": 10
+                        },
+                        "totalItems": {
+                          "type": "integer",
+                          "example": 25
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Неавторизований користувач"
@@ -138,7 +178,27 @@
         },
         "responses": {
           "201": {
-            "description": "Контакт успішно створено"
+            "description": "Контакт успішно створено",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact created successfully!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Помилка валідації даних"
@@ -172,7 +232,27 @@
         ],
         "responses": {
           "200": {
-            "description": "Контакт успішно знайдено"
+            "description": "Контакт успішно знайдено",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found contact!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Контакт не знайдено"
@@ -236,7 +316,27 @@
         },
         "responses": {
           "200": {
-            "description": "Контакт успішно оновлено"
+            "description": "Контакт успішно оновлено",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully updated contact!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Контакт не знайдено"
@@ -268,10 +368,13 @@
         ],
         "responses": {
           "204": {
-            "description": "Контакт успішно видалено"
+            "description": "Контакт успішно видалено (без контенту)"
+          },
+          "401": {
+            "description": "Неавторизований запит"
           },
           "404": {
-            "description": "Контакт не знайдено"
+            "description": "Контакт не знайдено або вже був видалений"
           }
         }
       }
@@ -282,6 +385,51 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "contact": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6716c3c27e8f5e0012b2a1c4"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+380501234567"
+          },
+          "favorite": {
+            "type": "boolean",
+            "example": false
+          },
+          "photo": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/demo/image/upload/v1234567890/contact.jpg"
+          },
+          "userId": {
+            "type": "string",
+            "example": "6716c1a47e8f5e0012b2a1a2"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-29T12:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-29T12:00:00.000Z"
+          }
+        }
       }
     }
   }
