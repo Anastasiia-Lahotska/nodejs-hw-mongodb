@@ -14,7 +14,7 @@ tags:
     description: CRUD операції для контактів
 servers:
   - url: http://localhost:3000
-  - url: https://nodejs-hw-mongodb-1-wppe.onrender.com
+  - url: https://nodejs-hw-mongodb-hw50.onrender.com
 paths:
   /contacts:
     get:

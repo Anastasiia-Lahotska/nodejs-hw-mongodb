@@ -3,10 +3,12 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import pino from 'pino-http';
+import { UPLOAD_DIR } from './constants/contacts.js';
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
 import { errorHandler } from './middlwares/errorHandler.js';
 import { notFoundHandler } from './middlwares/notFoundHandler.js';
+import { swaggerDocs } from './middlwares/swaggerDocs.js';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import path from 'path';
@@ -19,6 +21,8 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(cookieParser());
   app.use(pino());
+  app.use('/uploads', express.static(UPLOAD_DIR));
+  app.use('/api-docs', swaggerDocs());
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
