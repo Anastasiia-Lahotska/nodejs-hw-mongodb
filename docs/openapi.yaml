@@ -17,17 +17,9 @@ servers:
   - url: https://nodejs-hw-mongodb-hw50.onrender.com
 paths:
   /contacts:
-    get:
-      $ref: ../swagger/paths/contacts/get.yaml
-    post:
-      $ref: ../swagger/paths/contacts/post.yaml
+    $ref: ../swagger/paths/contacts/contacts.yaml
   /contacts/{contactId}:
-    get:
-      $ref: ../swagger/paths/contacts/{contactId}/get.yaml
-    patch:
-      $ref: ../swagger/paths/contacts/{contactId}/patch.yaml
-    delete:
-      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
+    $ref: ../swagger/paths/contacts/{contactId}.yaml
 components:
   securitySchemes:
     bearerAuth:
